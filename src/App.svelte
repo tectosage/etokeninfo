@@ -337,14 +337,9 @@
 
 <main>
 	<div id="iconsbar">
-		<span id="logo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M3 20H21C21.55 20 22 19.55 22 19V4C22 3.45 21.55 3 21 3H3C2.45 3 2 3.45 2 4V19C2 19.55 2.45 20 3 20Z" stroke="#2F2F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			<path d="M2 8H22V4C22 3.45 21.55 3 21 3H3C2.45 3 2 3.45 2 4V8Z" stroke="#2F2F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			<path d="M5 5.5H5.01" stroke="#2F2F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			<path d="M7.99001 5.5H8.00001" stroke="#2F2F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			<path d="M10.99 5.5H11" stroke="#2F2F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			<path fill-rule="evenodd" clip-rule="evenodd" d="M9.79923 12.7289C10.2841 12.442 10.7735 12.1554 11.2583 11.8685C11.3298 11.8255 11.4112 11.8028 11.4941 11.8028C11.577 11.8028 11.6584 11.8255 11.7299 11.8685L12.4503 12.2895C12.4596 12.2953 12.4673 12.3035 12.4727 12.3132C12.4781 12.3229 12.4809 12.3339 12.4809 12.3451C12.4809 12.3562 12.4781 12.3672 12.4727 12.3769C12.4673 12.3867 12.4596 12.3948 12.4503 12.4006L10.6879 13.4368C10.6657 13.4499 10.6472 13.4688 10.6345 13.4915C10.6218 13.5142 10.6153 13.54 10.6155 13.5662V14.436C10.615 14.4618 10.6216 14.4872 10.6343 14.5095C10.6471 14.5318 10.6656 14.55 10.6879 14.5623L11.4268 14.9972C11.4478 15.0108 11.4722 15.018 11.497 15.018C11.5219 15.018 11.5462 15.0108 11.5672 14.9972L14.6125 13.207C15.1292 12.9015 15.1292 12.0228 14.6125 11.7173L11.8755 10.1077C11.7613 10.0372 11.6304 10 11.497 10C11.3636 10 11.2327 10.0372 11.1186 10.1077L8.38126 11.7173C8.26503 11.7841 8.1684 11.8814 8.10137 11.9991C8.03434 12.1168 7.99935 12.2506 8.00002 12.3867C8.00002 13.4646 8.00466 14.5376 8.00002 15.6107C7.99908 15.7471 8.03388 15.8812 8.1008 15.9991C8.16772 16.1171 8.26434 16.2147 8.38064 16.2817L11.118 17.8961C11.2329 17.9642 11.3635 18 11.4964 18C11.6293 18 11.7599 17.9642 11.8749 17.8961L14.6119 16.2817C14.728 16.2149 14.8242 16.1172 14.8904 15.9991C14.9566 15.881 14.9903 15.7468 14.9879 15.6107V14.2091L11.7295 16.1343C11.6581 16.1774 11.5767 16.2001 11.4938 16.2001C11.4109 16.2001 11.3294 16.1774 11.258 16.1343L9.8048 15.2737C9.73249 15.2323 9.67245 15.1718 9.63098 15.0985C9.58952 15.0253 9.56817 14.942 9.56919 14.8574V13.1407C9.56908 13.0576 9.59039 12.976 9.63099 12.904C9.67158 12.8319 9.73004 12.7721 9.80047 12.7304L9.79923 12.7289Z" fill="#2F2F2F"/>
-			</svg>
+		<span id="logo"><button on:click={()=> viewedTokenId=null}><img alt="logo" src='/favicon.png'></button>
+			
+			
 		</span>
 		{#if !viewedTokenId}
 		<span id="github"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -622,9 +617,22 @@
 </main>
 
 <style>
+	#logo img{
+		height: 25px;
+		width: 25px;
+	}
+
+	#logo button{
+		padding: 0;
+		margin: 0;
+		display: flex;
+		align-items: center;
+	}
+
+
 	input{
 	font-weight: 600;
-	font-size: 20px;
+	font-size: 24px;
 	width: 0px;
 
 	}
@@ -806,11 +814,12 @@
 	}
 	
 	#search{
-		width: 42px;
+		width: 52px;
 		color: #aeb5bc;
-		background-color: #FFFFFF;
+		background-color: #f4f4f4ab;
 		outline: none;
 		border-radius: 200px;
+		border: none;
 	}
 
 	#credit{
@@ -863,6 +872,10 @@
 		background-color: #FFFFFF;
 		border-radius: 20px;
 		box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+	}
+
+	#logo{
+		box-shadow:(2px 4px 100px rgba(0, 0, 0, 0.15));
 	}
 
 	#iconsbar button{
@@ -1011,7 +1024,7 @@
 	}
 
 	#input{
-		width: 95%;
+		width: 100%;
 		display:flex;
 		box-sizing: border-box;
 		padding: 0 10px;
@@ -1035,9 +1048,11 @@
 		word-break: break-word;
 	}
 
-	#search:hover, #github:hover, button#back:hover{
+	#search:hover, #github:hover, button#back:hover, #logo:hover{
 		transition: .8s;
 		background: linear-gradient(179.05deg, #CCE0FF 0.81%, #ECF4FF 0.82%, rgba(235, 243, 255, 0.916667) 75.23%, rgba(201, 213, 255, 0) 109.05%);
 	}
+
+
 
 </style>
