@@ -685,8 +685,9 @@
 		flex-direction: column;
 		width: 100%;
 		box-sizing: border-box;
+		padding-right: 20px;
 		margin: 0;
-		padding-right: 10px;
+		padding-top: 0px;
 	}
 
 	#topHolders > span, #topHolders > div > span {
