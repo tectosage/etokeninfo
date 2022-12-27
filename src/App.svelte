@@ -607,6 +607,7 @@
 				<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" stroke="#221b38" d="M18 12C18 11.7239 17.7761 11.5 17.5 11.5C17.2239 11.5 17 11.7239 17 12C17 12.2761 17.2239 12.5 17.5 12.5C17.7761 12.5 18 12.2761 18 12Z"/>
 				</svg>
 			</button></span>
+			<div id='holdersContainer'>
 			{#each tokenInfo.topHolders as holder}
 			<span class="holder">
 				<a href={"https://explorer.e.cash/address/" + encode('etoken', decode(holder._id).type, decode(holder._id).hash)} target="_blank" rel="noreferrer">
@@ -620,6 +621,7 @@
 				<span><span class="black">{Number(holder.token_balance).toLocaleString()}</span>&nbsp;<span>{tokenRecords[viewedTokenId].ticker}</span></span>
 			</span>
 			{/each}
+			</div>
 			</div>
 		</div>
 	</div>
@@ -675,22 +677,28 @@
     color: #AEB5BC;
 	}
 
-	#topHolders{
-		max-height: 30vh;
+	#holdersContainer{
+		max-height: 25vh;
 		overflow-y: scroll;
 		overflow-x: hidden;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		box-sizing: border-box;
+		margin: 0;
+		padding-right: 10px;
 	}
 
-	#topHolders > span{
+	#topHolders > span, #topHolders > div > span {
 		justify-content: space-between;
 		width: 100%;
 	}
 
-	#topHolders > span >a + span{
+	#topHolders > div> span >a + span{
 		margin-right: 10px;
 	}
 
-	#topHolders > span{
+	#topHolders > span, #topHolders > div > span{
 		margin: 7px 10px;
 	}
 
@@ -706,6 +714,11 @@
 	#tokenStats, #topHolders{
 		padding: 20px;
 		align-items: flex-start;
+	}
+
+	#topHolders{
+		padding-bottom: 15px;
+		padding-top: 10px;
 	}
 
 	#tokenStats > span{
@@ -864,11 +877,11 @@
     right: 0px;
     display: inline-flex;
     justify-content: center;
-	color:#d2d2d2;
+	color:rgb(172,180,188);
     width: 100%;
 	}
-	#tecto{
-		color: rgb(10,74,156);
+	#credit a{
+		color: rgb(209,209,209);
 	}
 	#logo{
 		height: 40px;
