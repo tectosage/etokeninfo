@@ -4,6 +4,8 @@
 	const chronik = new ChronikClient("https://chronik.be.cash/xec")
 	let slpdb = 'https://tokendb.kingbch.com/q/'
 
+	let etoken = false
+
 	let tokenIdInput
 	let viewedTokenId 
 
@@ -12,9 +14,9 @@
 	let tokenInfo = {tokenId: ''}
 
 	let featuredTokens = [
-		'54dc2ecd5251f8dfda4c4f15ce05272116b01326076240e2b9cc0104d33b1484',
 		'fb4233e8a568993976ed38a81c2671587c5ad09552dedefa78760deed6ff87aa',
 		'7e7dacd72dcdb14e00a03dd3aff47f019ed51a6f1f4e4f532ae50692f62bc4e5',
+		'54dc2ecd5251f8dfda4c4f15ce05272116b01326076240e2b9cc0104d33b1484',
 		'f36e1b3d9a2aaf74f132fef3834e9743b945a667a4204e761b85f2e7b65fd41a',
 		'28eb601e438b1df2f49b3d783f7b236496ad9c07e4af35e8d6c5050732ef030a',
 		'58f4fa833b8559dae06339da7764105280a0a1def3b02d148ce041c8fa5a5afd'
@@ -595,7 +597,16 @@
 			</div>
 
 
-			<div id="topHolders"><span class="black">Top 10 Addresses</span>
+			<div id="topHolders"><span class="black">Top 10 Addresses <button on:click={()=> etoken = !etoken} id={etoken ? 'etoken' : 'ecash'}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" data-reactroot="">
+				<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" stroke="#221b38" fill="none" d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"/>
+				<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" stroke="#221b38" d="M7.5 12C7.5 11.4477 7.05228 11 6.5 11C5.94772 11 5.5 11.4477 5.5 12C5.5 12.5523 5.94772 13 6.5 13C7.05228 13 7.5 12.5523 7.5 12Z"/>
+				<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" stroke="#221b38" d="M13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12Z"/>
+				<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" stroke="#221b38" d="M18.5 12C18.5 11.4477 18.0523 11 17.5 11C16.9477 11 16.5 11.4477 16.5 12C16.5 12.5523 16.9477 13 17.5 13C18.0523 13 18.5 12.5523 18.5 12Z"/>
+				<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" stroke="#221b38" d="M12.5 12C12.5 11.7239 12.2761 11.5 12 11.5C11.7239 11.5 11.5 11.7239 11.5 12C11.5 12.2761 11.7239 12.5 12 12.5C12.2761 12.5 12.5 12.2761 12.5 12Z"/>
+				<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" stroke="#221b38" d="M7 12C7 11.7239 6.77614 11.5 6.5 11.5C6.22386 11.5 6 11.7239 6 12C6 12.2761 6.22386 12.5 6.5 12.5C6.77614 12.5 7 12.2761 7 12Z"/>
+				<path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" stroke="#221b38" d="M18 12C18 11.7239 17.7761 11.5 17.5 11.5C17.2239 11.5 17 11.7239 17 12C17 12.2761 17.2239 12.5 17.5 12.5C17.7761 12.5 18 12.2761 18 12Z"/>
+				</svg>
+			</button></span>
 			{#each tokenInfo.topHolders as holder}
 			<span class="holder">
 				<a href={"https://explorer.e.cash/address/" + encode('etoken', decode(holder._id).type, decode(holder._id).hash)} target="_blank" rel="noreferrer">
@@ -604,7 +615,7 @@
 					<path fill-rule="evenodd" clip-rule="evenodd" d="M14.6352 2.43058C16.5552 0.52314 19.6448 0.52314 21.5648 2.43058L21.5671 2.43289C22.5232 3.38904 23 4.64722 23 5.9C23 7.15278 22.5232 8.41096 21.5671 9.36711L18.4871 12.4471C18.0966 12.8376 17.4634 12.8376 17.0729 12.4471C16.6823 12.0566 16.6823 11.4234 17.0729 11.0329L20.1529 7.95289C20.7167 7.38904 21 6.64722 21 5.9C21 5.15329 20.7171 4.41197 20.154 3.84827C19.0144 2.71737 17.186 2.71724 16.0463 3.84788L10.9525 8.95173C10.3825 9.51428 10.1 10.2536 10.1 11C10.1 11.1344 10.1102 11.2699 10.1289 11.4169C10.14 11.4623 10.1456 11.4981 10.1487 11.5198C10.1504 11.5316 10.1518 11.5428 10.153 11.5536C10.1824 11.6899 10.2162 11.81 10.2583 11.9243C10.2619 11.9341 10.2654 11.9439 10.2687 11.9538C10.3992 12.3455 10.6247 12.718 10.9489 13.0348L10.9571 13.0428C11.1245 13.2103 11.3006 13.3482 11.4745 13.4525C11.9481 13.7367 12.1016 14.3509 11.8175 14.8245C11.5333 15.2981 10.9191 15.4516 10.4455 15.1675C10.1209 14.9728 9.81846 14.7321 9.54692 14.4612C8.99721 13.9227 8.60576 13.282 8.37621 12.6009C8.28731 12.3569 8.22615 12.1199 8.17939 11.8861C8.17773 11.8778 8.17617 11.8694 8.17472 11.8611C8.16876 11.8348 8.16386 11.8082 8.16003 11.7814C8.12562 11.5406 8.09998 11.2811 8.09998 11C8.09998 9.74748 8.57666 8.48785 9.54506 7.5307L14.6352 2.43058ZM8.15998 11.69C8.15998 11.6922 8.15998 11.6944 8.16 11.6967L8.15998 11.69Z" fill="#AEB5BC"/>
 					<path fill-rule="evenodd" clip-rule="evenodd" d="M12.1825 9.17551C12.4667 8.70192 13.0809 8.54836 13.5545 8.83251C13.8791 9.02724 14.1815 9.26791 14.4531 9.53885C15.0028 10.0774 15.3942 10.718 15.6238 11.3991C15.7127 11.6431 15.7738 11.8801 15.8206 12.1139C15.8222 12.1222 15.8238 12.1306 15.8253 12.1389C15.8312 12.1652 15.8361 12.1918 15.8399 12.2186C15.8744 12.4594 15.9 12.7189 15.9 13C15.9 14.2525 15.4233 15.5122 14.4549 16.4693L9.36479 21.5694C7.44481 23.4769 4.3552 23.4769 2.43522 21.5694L2.43289 21.5671C1.47674 20.611 1 19.3528 1 18.1C1 16.8472 1.47674 15.589 2.43289 14.6329L5.51289 11.5529C5.90342 11.1624 6.53658 11.1624 6.92711 11.5529C7.31763 11.9434 7.31763 12.5766 6.92711 12.9671L3.84711 16.0471C3.28326 16.611 3 17.3528 3 18.1C3 18.8467 3.28287 19.588 3.84595 20.1517C4.98554 21.2826 6.81395 21.2828 7.95368 20.1521C7.95419 20.1516 7.9547 20.1511 7.95522 20.1506L11.5319 16.5639L13.0475 15.0483C13.6175 14.4857 13.9 13.7464 13.9 13C13.9 12.8656 13.8897 12.7301 13.8711 12.5831C13.8599 12.5377 13.8544 12.5019 13.8513 12.4802C13.8496 12.4684 13.8482 12.4572 13.847 12.4464C13.8176 12.3101 13.7838 12.19 13.7417 12.0757C13.7381 12.0659 13.7346 12.0561 13.7313 12.0462C13.6007 11.6545 13.3752 11.282 13.0511 10.9652L13.0428 10.9572C12.8754 10.7897 12.6993 10.6518 12.5255 10.5475C12.0519 10.2633 11.8984 9.64909 12.1825 9.17551ZM15.84 12.31C15.84 12.3078 15.84 12.3056 15.84 12.3033V12.31Z" fill="#AEB5BC"/>
 				</svg>
-				<span class="black">{encode('etoken', decode(holder._id).type, decode(holder._id).hash).slice(0,15)}...{encode('etoken', decode(holder._id).type, decode(holder._id).hash).slice(-8)}</span>
+				<span class="black">{encode((etoken ? 'etoken' : 'ecash'), decode(holder._id).type, decode(holder._id).hash).slice(0,15)}...{encode((etoken ? 'etoken' : 'ecash'), decode(holder._id).type, decode(holder._id).hash).slice(-8)}</span>
 				</span></a>
 				<span><span class="black">{Number(holder.token_balance).toLocaleString()}</span>&nbsp;<span>{tokenRecords[viewedTokenId].ticker}</span></span>
 			</span>
@@ -617,6 +628,30 @@
 </main>
 
 <style>
+	#ecash, #etoken{
+		height: 24px;
+		width: 24px;
+		padding: 0;
+		border: none;
+		margin: 0;
+		margin-right: 15px;
+		border-radius: 20px;
+		place-items: center;
+	}
+
+	#ecash svg, #etoken svg{
+		margin: 0;
+	}
+
+	#ecash{
+		background-color: #FFE9C8;
+	}
+
+	#etoken{
+		background-color: #EAC9F7;
+	}
+
+
 	#logo img{
 		height: 25px;
 		width: 25px;
@@ -941,7 +976,7 @@
 		height:32px;
 	}
 	.small{
-		width:32px;
+		width:40px;
 		height:32px;
 		font-size: 18px;
 		margin: 0;
