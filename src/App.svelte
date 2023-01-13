@@ -27,6 +27,7 @@
 
 	let currentSeconds = (Math.floor(Date.now() / 1000))
 	let yesterdaySeconds = currentSeconds - (24*3600)
+	let weekAgoSeconds = currentSeconds - (24*7*3600)
 
 	let confirmedGenesisQuery = {
 		"v": 3,
@@ -247,6 +248,37 @@
 				"f": "[ .[] | {block_epoch: ._id, txs: .count} ]"
 			}
 		}
+		let pastWeekQuery = {
+			"v": 3,
+			"q": {
+				"db": [
+				"c"
+				],
+				"aggregate": [
+				{
+					"$match": {
+					"slp.valid": true,
+					"slp.detail.tokenIdHex" : viewedTokenId,
+					"blk.t": {
+						"$gte": weekAgoSeconds
+					}
+					}
+				},
+				{
+					"$group": {
+					"_id": "$blk.t",
+					"count": {
+						"$sum": 1
+					}
+					}
+				}
+				],
+				"limit": 10000
+			},
+			"r": {
+				"f": "[ .[] | {block_epoch: ._id, txs: .count} ]"
+			}
+		}
 		let pastDayUnconfirmedQuery = {
 			"v": 3,
 			"q": {
@@ -304,6 +336,7 @@
 		let recentTransactions = fetch(slpdb + btoa(JSON.stringify(recentTransactionsQuery)))
 		let total = fetch(slpdb + btoa(JSON.stringify(totalTransactionsQuery)))
 		let pastDayConfirmed = fetch(slpdb + btoa(JSON.stringify(pastDayQuery)))
+		let pastWeekConfirmed = fetch(slpdb + btoa(JSON.stringify(pastWeekQuery)))
 		let pastDayUnconfirmed = fetch(slpdb + btoa(JSON.stringify(pastDayUnconfirmedQuery)))
 
 
@@ -311,6 +344,7 @@
 		recentTransactions = await (await recentTransactions).json()
 		total = await (await total).json()
 		pastDayConfirmed = await (await pastDayConfirmed).json()
+		pastWeekConfirmed = await (await pastWeekConfirmed).json()
 		pastDayUnconfirmed = await (await pastDayUnconfirmed).json()
 
 		tokenInfo.recent = [...recentTransactions.u, ...recentTransactions.c].slice(0,10)
@@ -328,6 +362,10 @@
 		pastDayConfirmed.c.map(x=> count += x.txs)
 		pastDayUnconfirmed.u.map(x=> count += x.txs)
 		tokenInfo.pastDay = count
+		count = 0
+		pastWeekConfirmed.c.map(x=> count += x.txs)
+		pastDayUnconfirmed.u.map(x=> count += x.txs)
+		tokenInfo.pastWeek = count
 		console.log(tokenRecords[viewedTokenId])
 		console.log(tokenInfo)
 	}
@@ -361,7 +399,7 @@
 {#if !viewedTokenId}
 
 	<div id="container">
-		<span id="input"><input id="tokenid" placeholder="etoken id" spellcheck="false" bind:value={tokenIdInput}><button id="search" on:click={()=> viewToken(tokenIdInput)}>→</button></span>
+		<span id="input"><input id="tokenid" placeholder="eToken ID" spellcheck="false" bind:value={tokenIdInput}><button id="search" on:click={()=> viewToken(tokenIdInput)}>→</button></span>
 		<span id="recommended">Recommended eTokens</span>
 	<div id="featuredTokens">
 		{#await recordsPromise}
@@ -458,7 +496,7 @@
 			<div class="black" id="basicInfo">
 				<span id="topTokenName">{tokenRecords[viewedTokenId].name} Basic Info</span>
 				<div>
-					<span id="tokenName">	<div class="icon small"><span><img alt="token icon" src={"https://etoken-icons.s3.us-west-2.amazonaws.com/64/"+viewedTokenId+'.png'}  onerror="this.onerror=null; this.remove();"><span class="tick">{tokenRecords[viewedTokenId].ticker.slice(0,1).toUpperCase()}</span></span></div> <span>{tokenRecords[viewedTokenId].name}</span>
+					<span id="tokenName">	<div class="icon small"><a href={"https://explorer.e.cash/tx/" + viewedTokenId} target="_blank" rel="noreferrer"><img alt="token icon" src={"https://etoken-icons.s3.us-west-2.amazonaws.com/64/"+viewedTokenId+'.png'}  onerror="this.onerror=null; this.remove();"><span class="tick">{tokenRecords[viewedTokenId].ticker.slice(0,1).toUpperCase()}</span></a></div> <span>{tokenRecords[viewedTokenId].name}</span>
 					</span>
 					<span>
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -552,6 +590,17 @@
 						<path d="M19 14C20.1046 14 21 13.1046 21 12C21 10.8954 20.1046 10 19 10C17.8954 10 17 10.8954 17 12C17 13.1046 17.8954 14 19 14Z" fill="#AEB5BC"/>
 						<path d="M17 12C18.1046 12 19 11.1046 19 10C19 8.89543 18.1046 8 17 8C15.8954 8 15 8.89543 15 10C15 11.1046 15.8954 12 17 12Z" stroke="#AEB5BC" stroke-width="2" stroke-linecap="round"/>
 					</svg> <span>{tokenRecords[viewedTokenId].name} TX in the last 24 hours: <span class="black">{tokenInfo.pastDay}</span></span>
+				</span>
+				<span>
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M2 3V21H22" stroke="#AEB5BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M5 17H7V21H5V17Z" stroke="#AEB5BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M10 15H12V21H10V15Z" stroke="#AEB5BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M15 13H17V21H15V13Z" stroke="#AEB5BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M20 11H22V21H20V11Z" stroke="#AEB5BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M4.86395 12.4454L19.5426 6.07851M19.5426 6.07851L16.7896 5.0926M19.5426 6.07851L18.3813 8.76226" stroke="#AEB5BC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+						 <span>{tokenRecords[viewedTokenId].name} TX in the last week: <span class="black">{tokenInfo.pastWeek}</span></span>
 				</span>
 				<span>
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -666,6 +715,9 @@
 		align-items: center;
 	}
 
+	.holder > a{
+		margin-right: 5px;
+	}
 
 	input{
 	font-weight: 600;
@@ -768,6 +820,13 @@
 
 	#tokenName > span{
 		margin-left: -5px !important;
+		color: rgb(47,47,47);
+		text-decoration: none;
+	}
+
+
+	#tokenName > a:hover{
+		box-shadow: 0px 0px 10px rgb(50 50 50 / 40%);
 	}
 
 	#recentTransactions{
@@ -935,6 +994,7 @@
 	.name{
 		flex-grow: 1;
 		text-align: left;
+		width:35%;
 	}
 
 	.tokenid{
@@ -998,15 +1058,22 @@
 		padding-right: 0px;
 		margin-left: 0px;
 	}
-	.small > span> span{
+
+	.small > a {
+		display: flex;
+		place-items: center;			
+	}
+
+
+	.small > a > span{
 		margin-left: -19px;
 	}
 
-	.small > span > img + span{
+	.small > a > img + span{
 		margin-left:auto;
 	}
 
-	.small > span > img{
+	.small > a > img{
 		margin-left: -5px;
 	}
 
